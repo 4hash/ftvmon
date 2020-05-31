@@ -199,7 +199,7 @@ In the following `"Logfile"` section, monitoring of log events is configured. **
                "Match":"submitTransaction attempt.*FAIL",
                "IsRegex":true,
                "MessageOn":"Failed to send or recover stake",
-               "MessageOff":"Double backslashes are required to put literal \ characters in the regex string",
+               "MessageOff":"Double backslashes are required to put literal backslash characters in the regex string",
                "Threshold":1,
                "Window":0,
                "IncludeRaw":true
