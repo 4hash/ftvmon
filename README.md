@@ -25,7 +25,7 @@ Update your shell:
 ```bash
 . ~/.profile
 ```
-Instal dependencies and build:
+Install dependencies and build:
 ```bash
 go get -u gopkg.in/tucnak/telebot.v2
 go get -u github.com/shirou/gopsutil
