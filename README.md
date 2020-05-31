@@ -62,7 +62,7 @@ Add paths to keys and FreeTON C++ Validator's Node installation:
    "TonPath":"/home/freeton/net.ton.dev",
    "KeysPath":"/home/freeton/ton-keys",
 ```
-In the following system performance metrics `"Checks"` section, edit the thresholds that will trigger alerts and specific `"Check"`'s parameters. Sends a message when a condition arises (above threshold) and when it clears (below threshold). Every check (metric) can be disabled. `"Checks"` are running continiously.
+In the following system performance metrics `"Checks"` section, edit the thresholds that will trigger alerts and specific `"Checks"` parameters. Sends a message when a condition arises (above threshold) and when it clears (below threshold). Every check (metric) can be disabled. `"Checks"` are running continiously.
 Name of the proccess to monitor (an alert will be sent if the proccess is not found):
 ```json
    "Checks":{
@@ -216,8 +216,8 @@ Uses run-time reflection, a metric can be added by adding a function (returning 
 
 ## TODO
 * Logging levels
-* Add weight to validator's ective set and next set checks
+* Add weight to validator's active set and next set checks
 * Multiple validator's servers support (with agents)
 * Zabbix integration
 * Docker counters support
-* Native calls to services (in place of invoking external validator-engine-console and lite-client)
+* Native calls to services (in place of invoking external *validator-engine-console* and *lite-client*)
