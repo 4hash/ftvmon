@@ -451,16 +451,16 @@ func (monitor *Monitor) IsInElections() (status bool, err error) {
 				break Label
 			}
 		}
-	}
 
-	monitor.ExtChecks["IsInElections"].Lock()
-	//If we have voted, ADNL should have changed, and we should be in the elections
-	//If monitor.ExtChecks["IsActive"].adnlChanged is true, and !isInElections: status = true
-	monitor.ExtChecks["IsActive"].Lock()
-	if monitor.ExtChecks["IsActive"].adnlChanged && !isInElections {
-		status = true
+		//If we have voted, ADNL should have changed, and we should be in the elections
+		//If monitor.ExtChecks["IsActive"].adnlChanged is true, and !isInElections: status = true
+		monitor.ExtChecks["IsActive"].Lock()
+		if monitor.ExtChecks["IsActive"].adnlChanged && !isInElections {
+			status = true
+		}
+		monitor.ExtChecks["IsActive"].Unlock()
 	}
-	monitor.ExtChecks["IsActive"].Unlock()
+	monitor.ExtChecks["IsInElections"].Lock()
 	if isNotActive {
 		monitor.ExtChecks["IsInElections"].message = fmt.Sprintf("IS IN ELECTIONS?: Elections closed")
 		monitor.ExtChecks["IsInElections"].msgStatus = fmt.Sprintf("IS IN ELECTIONS?: Elections closed")
