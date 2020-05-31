@@ -1,0 +1,116 @@
+{
+   "Token":"1122334455:AABBCCDDEEFFaaaaaaaaaaaaaaaaaaaabbb",
+   "Authorized":[
+      "UserA",
+      "UserB"
+   ],
+   "TonPath":"/home/freeton/net.ton.dev",
+   "KeysPath":"/home/freeton/ton-keys",
+   "Checks":{
+      "Process":{
+         "Enabled":true,
+         "Name":"validator-engine"
+      },
+      "CPU":{
+         "Enabled":true,
+         "Threshold":90.0
+      },
+      "Mem":{
+         "Enabled":true,
+         "Threshold":90.0
+      },
+      "DiskSpace":{
+         "Enabled":true,
+         "Path":"/var/ton-work",
+         "Threshold":80.0
+      },
+      "DiskIOPS":{
+         "Enabled":true,
+         "dev":"sda",
+         "Threshold":4000.0
+      },
+      "DiskIOUtil":{
+         "Enabled":true,
+         "dev":"sda",
+         "Threshold":80.0
+      },
+      "DiskMBps":{
+         "Enabled":true,
+         "dev":"sda",
+         "Threshold":300.0
+      },
+      "NetMbs":{
+         "Enabled":true,
+         "Threshold":100.0
+      }
+   },
+   "ExtChecks":{
+      "Sync":{
+         "Enabled":true,
+         "Threshold":-30
+      },
+      "IsActive":{
+         "Enabled":true
+      },
+      "IsInElections":{
+         "Enabled":true
+      },
+      "IsNext":{
+         "Enabled":true
+      }
+   },
+   "Logfiles":[
+      {
+         "Enabled":true,
+         "File":"/var/ton-work/node.log",
+         "Events":[
+            {
+               "Enabled":false,
+               "Match":"SLOW",
+               "IsRegex":false,
+               "MessageOn":"Too many SLOW records in the log, more than 150 within last 1 minute",
+               "MessageOff":"The amount of SLOW records is back to normal, less than 150 within last 1 minute",
+               "Threshold":150,
+               "Window":1,
+               "IncludeRaw":true
+            },
+            {
+               "Enabled":true,
+               "Match":"PosixError : Connection refused",
+               "IsRegex":false,
+               "MessageOn":"Connection issues!!!",
+               "MessageOff":"",
+               "Threshold":1,
+               "Window":0,
+               "IncludeRaw":true
+            }
+         ]
+      },
+      {
+         "Enabled":true,
+         "File":"/home/freeton/net.ton.dev/scripts/validator.log",
+         "Events":[
+            {
+               "Enabled":true,
+               "Match":"prepared for elections",
+               "IsRegex":false,
+               "MessageOn":"Prepared for elections",
+               "MessageOff":"If Window is 0, MessageOn will be triggered every time the event occurs (no MessageOff) ",
+               "Threshold":1,
+               "Window":0,
+               "IncludeRaw":true
+            },
+            {
+               "Enabled":true,
+               "Match":"submitTransaction attempt.*FAIL",
+               "IsRegex":true,
+               "MessageOn":"Failed to send or recover stake",
+               "MessageOff":"Double escape // in regexp",
+               "Threshold":1,
+               "Window":0,
+               "IncludeRaw":true
+            }
+         ]
+      }
+   ]
+}
