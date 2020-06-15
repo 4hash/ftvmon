@@ -39,7 +39,6 @@ type Monitor struct {
 	bot             *tb.Bot
 	prQueue         chan string
 	hostname        string
-	wg              sync.WaitGroup
 }
 
 type Metric struct {
@@ -54,6 +53,7 @@ type Metric struct {
 	adnlChanged   bool
 	lastBlockTime int64
 	lastState     bool
+	status        bool
 }
 
 type Logfile struct {
@@ -267,44 +267,41 @@ func (monitor *Monitor) tailLog(logfile *Logfile) {
 
 func (Monitor *Monitor) checker() {
 	defer wg.Done()
-	// ExtChecks - every 60 seconds, Checks - continuously
-	ticker := time.NewTicker(60 * time.Second)
-	fcheck := func(checks map[string]*Metric) {
+	//checking for changes every 5 second
+	ticker := time.NewTicker(5 * time.Second)
+	flaunch := func(checks map[string]*Metric) {
 		for n, m := range checks {
 			name := n
 			metric := m
 			if metric.Enabled {
 				f := func() {
 					v := reflect.ValueOf(Monitor)
-					response := v.MethodByName(name).Call(nil)
-					status, _ := response[0].Interface().(bool)
-					err, _ := response[1].Interface().(error)
-					if err != nil {
-						log.Println("Error: ", err)
-					}
-					metric.Lock()
-					if status != metric.lastState {
-						//if status changed, metric.message is not empty ""
-						log.Println(Monitor.hostname + ": " + metric.message)
-						Monitor.prQueue <- metric.message
-						metric.lastState = !metric.lastState
-					}
-					metric.Unlock()
+					_ = v.MethodByName(name).Call(nil)
 				}
-				Monitor.wg.Add(1)
 				go f()
 			}
 		}
-		//wait until all checks are complete
-		Monitor.wg.Wait()
 	}
-	//Running ExtChecks for the first time without waiting
-	fcheck(Monitor.ExtChecks)
+	fcheck := func(checks map[string]*Metric) {
+		for _, metric := range checks {
+			if metric.Enabled {
+				metric.Lock()
+				if metric.status != metric.lastState {
+					//if status changed, metric.message is not empty ""
+					log.Println(Monitor.hostname + ": " + metric.message)
+					Monitor.prQueue <- metric.message
+					metric.lastState = !metric.lastState
+				}
+				metric.Unlock()
+			}
+		}
+	}
+	flaunch(Monitor.Checks)
+	flaunch(Monitor.ExtChecks)
 	for {
 		select {
-		default:
-			fcheck(Monitor.Checks)
 		case <-ticker.C:
+			fcheck(Monitor.Checks)
 			fcheck(Monitor.ExtChecks)
 		}
 	}
@@ -312,7 +309,7 @@ func (Monitor *Monitor) checker() {
 
 func main() {
 	//go func() {
-	//	log.Println(http.ListenAndServe("10.1.1.16:6060", nil))
+	//	log.Println(http.ListenAndServe("10.1.2.1:6060", nil))
 	//}()
 	var monitor Monitor
 	//cleanup
