@@ -62,18 +62,10 @@ Add paths to keys and FreeTON C++ Validator's Node installation:
    "TonPath":"/home/freeton/net.ton.dev",
    "KeysPath":"/home/freeton/ton-keys",
 ```
-In the following system performance metrics `"Checks"` section, edit the thresholds that will trigger alerts and specific `"Checks"` parameters. Sends a message when a condition arises (above threshold) and when it clears (below threshold). Every check (metric) can be disabled. `"Checks"` are running continiously.
-Name of the proccess to monitor (an alert will be sent if the proccess is not found):
-```json
-   "Checks":{
-      "Process":{
-         "Enabled":true,
-         "Name":"validator-engine"
-      },
-
-```
+In the following system performance metrics `"Checks"` section, edit the thresholds that will trigger alerts and specific `"Checks"` parameters. Sends a message when a condition arises (above threshold) and when it clears (below threshold). Every check (metric) can be disabled. `"Checks"` measurements are taken every 5s.
 CPU Load percentage (measured on 5s intervals):
 ```json
+   "Checks":{
       "CPU":{
          "Enabled":true,
          "Threshold":90.0
@@ -126,6 +118,15 @@ Aggregate (all interfaces) network Megabytes per second:
       }
 ```
 The following `"ExtChecks"` are run every minute and invoke external processes.
+Name of a proccess to monitor (an alert will be sent if the proccess is not found), also counts number of threads:
+```json
+   "ExtChecks":{
+      "Process":{
+         "Enabled":true,
+         "Name":"validator-engine -C"
+      },
+
+```
 Sync checks sync status (TIME_DIFF) of the node:
 ```json
       "Sync":{
