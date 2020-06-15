@@ -7,10 +7,6 @@
    "TonPath":"/home/freeton/net.ton.dev",
    "KeysPath":"/home/freeton/ton-keys",
    "Checks":{
-      "Process":{
-         "Enabled":true,
-         "Name":"validator-engine"
-      },
       "CPU":{
          "Enabled":true,
          "Threshold":90.0
@@ -45,6 +41,10 @@
       }
    },
    "ExtChecks":{
+      "Process":{
+         "Enabled":true,
+         "Name":"validator-engine -C"
+      },
       "Sync":{
          "Enabled":true,
          "Threshold":-30
