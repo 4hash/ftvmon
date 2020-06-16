@@ -620,7 +620,7 @@ func (monitor *Monitor) IsInElections() {
 			pubKeyBig.SetString(pubKey, 16)
 			pubKeyBigString := pubKeyBig.Text(10)
 			//log.Printf("Current Validator Public Key Big Int: %s", pubKeyBigString)
-			cmd := exec.Command(monitor.TonPath+"/ton/build/lite-client/lite-client", "-a", "127.0.0.1:3031", "-p", monitor.KeysPath+"/liteserver.pub", "-rc", "runmethod -1:3333333333333333333333333333333333333333333333333333333333333333 participant_list")
+			cmd := exec.Command(monitor.TonPath+"/ton/build/lite-client/lite-client", "-a", "127.0.0.1:3031", "-p", monitor.KeysPath+"/liteserver.pub", "-rc", "runmethodfull -1:3333333333333333333333333333333333333333333333333333333333333333 participant_list")
 			cmd.Stdout = &out
 			cmd.Stdin = strings.NewReader("")
 			err = cmd.Run()
